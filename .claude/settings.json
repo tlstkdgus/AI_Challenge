@@ -1,16 +1,3 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('tool_input',{}).get('command',''); exit(0 if 'git commit' in cmd else 1)\" && python 'c:/Users/SSAFY/AI_Challenge/scripts/update_readme.py' 2>/dev/null || true",
-            "statusMessage": "README.md 업데이트 중..."
-          }
-        ]
-      }
-    ]
-  }
+  "hooks": {}
 }
