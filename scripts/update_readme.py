@@ -30,7 +30,7 @@ def update_readme():
     # 기존 섹션 교체 또는 파일 끝에 추가
     pattern = r"\n## 최근 커밋\n[\s\S]*?(?=\n## |\Z)"
     if re.search(pattern, content):
-        content = re.sub(pattern, section, content)
+        content = re.sub(pattern, lambda _: section, content)
     else:
         content = content.rstrip() + "\n" + section
 
