@@ -124,10 +124,22 @@ upgraded_qwen3vl.ipynb 순서대로 실행
 | 학습 속도 18s/batch | VRAM 97% 포화 | 모델 크기 축소 |
 | unsloth 설치 후 torch 다운그레이드 | unsloth가 torch<2.11 요구 | unsloth 제거 후 nightly 재설치 |
 
+## 실험 기록
+
+> 점수/메모 열은 직접 채워주세요.
+
+| 파일명 | 날짜 | 주요 변경 | 점수 | 메모 |
+|--------|------|-----------|------|------|
+| submission_Qwen3_8B_origin.csv | 2026-04-02 | | - |  |
+
 ## 최근 커밋
 
 | 날짜 | 내용 | 작성자 |
 |------|------|--------|
+| 2026-04-02 | Merge branch 'sanghyeon' of https://github.com/tlstkdgus/AI_Challenge into sanghyeon | tlstkdgus |
+| 2026-04-02 | readme update 수정 | tlstkdgus |
+| 2026-04-02 | Update scripts/update_readme.py | sanghyeon shin |
+| 2026-04-02 | Update .claude/settings.json | sanghyeon shin |
 | 2026-04-02 | origin code result | tlstkdgus |
 | 2026-04-02 | 자동 readme 업데이트 적용 | tlstkdgus |
 | 2026-04-02 | unsloth_compiled_cache add to gitignore | tlstkdgus |
