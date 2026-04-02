@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | grep -q 'git commit' && python scripts/update_readme.py 2>/dev/null || true",
+            "statusMessage": "README.md 업데이트 중..."
+          }
+        ]
+      }
+    ]
+  }
+}
