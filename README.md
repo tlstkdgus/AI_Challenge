@@ -128,6 +128,8 @@ upgraded_qwen3vl.ipynb 순서대로 실행
 
 | 날짜 | 내용 | 작성자 |
 |------|------|--------|
+| 2026-04-02 | origin code result | tlstkdgus |
+| 2026-04-02 | 자동 readme 업데이트 적용 | tlstkdgus |
 | 2026-04-02 | unsloth_compiled_cache add to gitignore | tlstkdgus |
 | 2026-04-02 | baseline 추가 금지 | tlstkdgus |
 | 2026-04-02 | 기본 셋팅 | tlstkdgus |
