@@ -93,11 +93,27 @@ AI_Challenge/
 | 평가 | dev accuracy (200 샘플 majority vote) |
 | Best checkpoint | dev accuracy 기준 자동 저장 |
 
+### Exp4 - 최적화 (팀원 4, 데스크탑 RTX 5060 Ti)
+
+| 항목 | 설정 |
+|------|------|
+| 모델 | `Qwen/Qwen3-VL-8B-Instruct` |
+| 학습 데이터 | ~4,565개 (전체 90%, 층화 분리) |
+| Epoch | 1 |
+| LoRA | r=16, alpha=32, dropout=0 (Unsloth 최적화) |
+| LR | 6e-5, cosine + warmup 10% |
+| Label smoothing | 0.05 |
+| 전처리 | 패딩 (검정 여백, 비율 유지) |
+| 오버샘플링 | 없음 (데이터 균형 양호) |
+| 추론 | TTA 3회 다수결 |
+
 ### 주요 개선 전략
 
-- **선지 셔플링**: 학습 시 a/b/c/d 순서를 랜덤으로 섞어 positional bias 제거
-- **Gradient clipping**: max norm 1.0으로 학습 안정화
-- **Best model 저장**: 매 epoch dev accuracy 측정 후 최고 성능 체크포인트 저장
+- **층화 추출**: answer × 질문유형(재질/개수/색상/종류) 복합 key로 train/valid 분리
+- **labels 마스킹**: assistant 응답 토큰만 loss 반영 (이미지·질문 토큰 제외)
+- **TTA**: 추론 시 선지 순서를 3회 셔플 후 다수결로 positional bias 제거
+- **lora_dropout=0**: Unsloth fast patching 활성화로 속도 19배 향상
+- **선지 셔플 제거**: 학습/추론 일관성 유지
 
 ---
 
@@ -123,6 +139,9 @@ upgraded_qwen3vl.ipynb 순서대로 실행
 | VRAM 부족 (8B 모델) | 16GB 한계 | 4B 모델로 변경 |
 | 학습 속도 18s/batch | VRAM 97% 포화 | 모델 크기 축소 |
 | unsloth 설치 후 torch 다운그레이드 | unsloth가 torch<2.11 요구 | unsloth 제거 후 nightly 재설치 |
+| 학습 속도 53s/batch (8B Unsloth) | lora_dropout=0.05로 fast patching 비활성화 | `lora_dropout=0` 으로 변경 → 2.75s/batch |
+| loss 15~20 수렴 안 됨 | labels에 이미지·질문 토큰 포함 | DataCollator에서 assistant 응답 전까지 -100 마스킹 |
+| `torch.cuda.amp.GradScaler` FutureWarning | deprecated API | `torch.amp.GradScaler('cuda')` 로 변경 |
 
 ## 실험 기록
 
@@ -130,16 +149,18 @@ upgraded_qwen3vl.ipynb 순서대로 실행
 
 | 파일명 | 날짜 | 주요 변경 | 점수 | 메모 |
 |--------|------|-----------|------|------|
-| submission_Qwen3_8B_origin.csv | 2026-04-02 | | - |  |
+| submission_Qwen3_8B_origin.csv | 2026-04-02 | 베이스라인 | - | |
+| submission_TTA_v1.csv | 2026-04-03 | Exp4: 층화분리+labels마스킹+TTA | - | Qwen3-VL-8B, lora_dropout=0 |
 
 ## 최근 커밋
 
 | 날짜 | 내용 | 작성자 |
 |------|------|--------|
-| 2026-04-02 | Merge branch 'sanghyeon' of https://github.com/tlstkdgus/AI_Challenge into sanghyeon | tlstkdgus |
+| 2026-04-03 | Exp4 최적화: 층화분리, labels마스킹, TTA, lora_dropout=0 | sanghyeon shin |
+| 2026-04-02 | update readme | tlstkdgus |
+| 2026-04-02 | Merge branch 'sanghyeon' | tlstkdgus |
 | 2026-04-02 | readme update 수정 | tlstkdgus |
 | 2026-04-02 | Update scripts/update_readme.py | sanghyeon shin |
-| 2026-04-02 | Update .claude/settings.json | sanghyeon shin |
 | 2026-04-02 | origin code result | tlstkdgus |
 | 2026-04-02 | 자동 readme 업데이트 적용 | tlstkdgus |
 | 2026-04-02 | unsloth_compiled_cache add to gitignore | tlstkdgus |

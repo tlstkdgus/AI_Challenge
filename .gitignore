@@ -4,3 +4,12 @@
 **/train/
 **/baseline/
 **/unsloth_compiled_cache/
+
+# W&B logs
+**/wandb/
+
+# Jupyter checkpoints
+**/.ipynb_checkpoints/
+
+# Model checkpoints
+**/qwen3_vl_finetuned/
